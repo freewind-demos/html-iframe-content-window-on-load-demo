@@ -1,8 +1,10 @@
 const mainIFrame = document.getElementById('main');
-let button = document.getElementById('button');
+const button = document.getElementById('button');
+
+mainIFrame.contentWindow.myValue = 111;
 
 button.addEventListener('click', () => {
-    mainIFrame.src = './inner3.html';
+    mainIFrame.src = './inner2.html'
 })
 
 mainIFrame.addEventListener('load', (event) => {
@@ -10,29 +12,21 @@ mainIFrame.addEventListener('load', (event) => {
 })
 
 mainIFrame.contentWindow.addEventListener('load', (event) => {
-    console.log("### contentWindow.load", event.target.body.innerHTML);
+    console.log("### contentWindow.load1", {html: event.target.body.outerHTML});
 })
 
+let www = null;
+setInterval(() => {
+    const newWin = mainIFrame.contentWindow
+    console.log("### mainIFrame.contentWindow.myValue", mainIFrame.contentWindow.myValue)
+    if (www === null) {
+        www = newWin;
+        return;
+    }
+    if (newWin !== www) {
+        console.log("### contentWindow is changed");
+    } else {
+        console.log('### contentWindow is same');
+    }
 
-setTimeout(() => {
-
-    mainIFrame.src = './inner2.html'
-}, 3000)
-
-// console.log("### mainIFrame?.contentWindow", mainIFrame?.contentWindow.document);
-//
-// setTimeout(() => {
-//     // mainIFrame?.contentWindow.document.addEventListener('DOMContentLoaded', (event) => {
-//     //     console.log('DOM fully loaded and parsed');
-//     // });
-//     mainIFrame.contentWindow.document.onreadystatechange = function(e)
-//     {
-//         console.log('### document.readyState', document.readyState)
-//         // if (document.readyState === 'loading')
-//         // {
-//         //     //dom is ready, window.onload fires later
-//         // }
-//     };
-// }, 0)
-//
-//
+}, 1000)
